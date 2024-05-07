@@ -1,8 +1,26 @@
+import 'package:firstapp/pages/home_page.dart';
+import 'package:firstapp/pages/profile_page.dart';
+import 'package:firstapp/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class FirstPage extends StatelessWidget {
-  const FirstPage({super.key});
+class FirstPage extends StatefulWidget {
+  FirstPage({super.key});
+
+  @override
+  State<FirstPage> createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  int _selectedIdex = 0;
+
+  void _navigateBottonBar(int index) {
+    setState(() {
+      _selectedIdex = index;
+    });
+  }
+
+  final List _pages = [HomePage(), ProfilePage(), SettingsPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -10,29 +28,16 @@ class FirstPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("1st Page"),
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.deepPurple[100],
-        child: Column(
-          children: [
-            DrawerHeader(child: Icon(Icons.favorite, size: 48)),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/homePage');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/settingsPage');
-              },
-            )
-          ],
-        ),
+      body: _pages[_selectedIdex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIdex,
+        onTap: _navigateBottonBar,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Settings'),
+        ],
       ),
     );
   }
